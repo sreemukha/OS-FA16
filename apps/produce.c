@@ -18,5 +18,4 @@ void producer(int count) {
       signal(consumed);		    
     }
   }	
-  exit(0);	
 }
