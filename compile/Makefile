@@ -47,7 +47,7 @@ REBUILDFLAGS	=	-s $(TOPDIR)/system  debug.c 	\
 			-s $(TOPDIR)/system/platform/$(PLATFORM)\
 			-s $(TOPDIR)/lib			\
 			-s $(TOPDIR)/shell  'xsh_rdstest*'      \
-			-s $(TOPDIR)/apps			\
+			-s $(TOPDIR)/apps/			\			
 
 ifeq ($(PLATFORM),arm-qemu)
 REBUILDFLAGS 	+=	-s $(TOPDIR)/device/tty			\

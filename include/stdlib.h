@@ -15,3 +15,4 @@ uint32 rand(void);
 void srand(unsigned int);
 void *malloc(unsigned int nbytes);
 void free(void *pmem);
+typedef unsigned int uint;
