@@ -1,0 +1,8 @@
+System calls implemented as a part of this assignment are 
+future_alloc(), 
+future_get(), 
+future_set(), 
+future_free(). 
+Other functions implemented are future_cons.c, future_prods.c, xsh_prodcons.c
+
+Both the teammates contributed equally towards this assignment.  

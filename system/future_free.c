@@ -4,6 +4,9 @@ syscall future_free(future *fut)
   if(fut == NULL) {
     return SYSERR;
   }
-return freemem((char*)fut,sizeof(future));
+  if(fut->state == FUTURE_WAITING) {
+    ready(fut->pid);
+ }
+  return freemem((char*)fut,sizeof(future));
 }
 

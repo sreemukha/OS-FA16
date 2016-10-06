@@ -7,9 +7,5 @@ future* future_alloc(int future_flag)
     fut->flag = future_flag;
     fut->state = FUTURE_EMPTY;
   }
-  else {
-    printf("\nError!\n");
-    return NULL;
-  }
   return fut;
 }

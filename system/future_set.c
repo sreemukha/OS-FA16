@@ -1,12 +1,11 @@
 #include <future.h>
 syscall future_set(future *fut, int *value)
 {
-  if(fut->state == FUTURE_EMPTY||fut->state == FUTURE_WAITING) {
-    fut->state = FUTURE_VALID;
-	fut->value = *value;		
-	return OK;
-  }	
-  else {
+  if(fut == NULL || fut->state == FUTURE_VALID) {
     return SYSERR;
   }
+  fut->value = *value;
+  fut->state = FUTURE_VALID;
+  resume(fut->pid);
+  return OK;
 }
