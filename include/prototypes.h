@@ -1,6 +1,9 @@
 /* in file addargs.c */
 extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 
+/* in file am335x_eth_init.c */
+extern	int32	am335x_eth_init(struct ethcblk *);
+
 /* in file arp.c */
 
 extern	void	arp_init();
@@ -34,7 +37,7 @@ extern	interrupt clkhandler(void);
 
 extern	void	clkinit(void);
 
-/* in file clkint.S - ARM */
+/* in file clkint.S */
 
 extern	void	clkint(void);
 
@@ -67,7 +70,6 @@ extern	uint32	dot2ip(char *, uint32 *);
 /* in file queue.c */
 
 extern	pid32	enqueue(pid32, qid16);
-extern	pid32	dequeue(qid16);
 
 /* in file intutils.S */
 
@@ -77,24 +79,25 @@ extern	intmask	disable(void);
 
 extern	void	enable(void);
 
-/* in file ethinit.c */
-extern	int32	ethinit(struct dentry *);
-
 /* in file ethcontrol.c */
 extern	int32	ethcontrol(struct dentry *, int32, int32, int32);
 
+/* in file ethinit.c */
+extern	int32	ethinit(struct dentry *);
+
+/* in file ethhandler.c */
+extern	interrupt ethhandler(uint32);
+
 /* in file ethread.c */
-extern	devcall	ethread(struct dentry *, void *, uint32);
+extern	int32	ethread(struct dentry *, void *, uint32);
 
 /* in file ethwrite.c */
 extern	int32	ethwrite(struct dentry *, void *, uint32);
 
-/* in file exit.c */
-extern	void	exit(void);
-
 /* in file evec.c */
 extern	int32	initevec(void);
 extern	int32	set_evec(uint32, uint32);
+extern	void	trap(int32);
 
 /* in file exception.c */
 extern  void exception(int32, int32*);
@@ -113,8 +116,6 @@ extern	syscall	getc(did32);
 
 /* in file getitem.c */
 extern	pid32	getfirst(qid16);
-extern	pid32	getlast(qid16);
-extern	pid32	getitem(pid32);
 
 /* in file getmem.c */
 extern	char	*getmem(uint32);
@@ -289,8 +290,7 @@ extern	devcall	lpread(struct dentry *, char *, int32);
 extern	devcall	lpwrite(struct dentry *, char *, int32);
 
 /* in file mark.c */
-extern	void	markinit(void);
-extern	status	mark(int32 *);
+extern	void	_mkinit(void);
 
 /* in file memcpy.c */
 extern	void	*memcpy(void *, const void *, int32);
@@ -425,7 +425,6 @@ extern	umsg32	recvtime(int32);
 
 /* in file resched.c */
 extern	void	resched(void);
-extern	status	resched_cntl(int32);
 
 /* in file intutils.S */
 extern	void	restore(intmask);
@@ -499,6 +498,9 @@ extern	status	rdscomm(struct rd_msg_hdr *, int32, struct rd_msg_hdr *, int32, st
 /* in file rdsprocess.c */
 extern	void	rdsprocess(struct rdscblk *);
 
+/* in file resched.c */
+extern	status	resched_cntl(int32);
+
 /* in file seek.c */
 extern	syscall	seek(did32, uint32);
 
@@ -554,6 +556,9 @@ extern	void	ttyhandle_in(struct ttycblk *, struct uart_csreg *);
 
 /* in file ttyhandle_out.c */
 extern	void	ttyhandle_out(struct ttycblk *, struct uart_csreg *);
+
+/* in file ttyhandler.c */
+extern	void	ttyhandler(uint32);
 
 /* in file ttyinit.c */
 extern	devcall	ttyinit(struct dentry *);
@@ -625,15 +630,6 @@ devcall loopbackPutc(struct dentry *, char);
 devcall loopbackControl(struct dentry *, int, long, long);
 
 syscall kputc(uchar c, struct dentry *devptr);
-
-extern	void	trap(int32);
-
-/* in file ttyhandler.c */
-extern	void	ttyhandler(uint32);
-
-/* in file ethhandler.c */
-extern	interrupt ethhandler(uint32);
-
 #endif /* ARM_QEMU */
 
 #ifdef ARM_BBB
@@ -641,66 +637,4 @@ extern	interrupt ethhandler(uint32);
 syscall       kprintf(char *fmt, ...);
 syscall       kputc(byte);
 syscall       kgetc(void);
-
-/* in file am335x_eth_init.c */
-extern	int32	am335x_eth_init(struct ethcblk *);
-
-extern	void	trap(int32);
-
-/* in file ethhandler.c */
-extern	interrupt ethhandler(uint32);
-
-/* in file ttyhandler.c */
-extern	void	ttyhandler(uint32);
-
 #endif /* ARM_BBB */
-
-#ifdef X86_GALILEO
-
-/* in file clkdisp.S */
-
-extern	void	clkdisp(void);
-
-/* in file ethdispatch.S */
-extern	void	ethdispatch(void);
-
-/* in file kprintf.c */
-extern int console_init(void);
-
-/* in file early_imr.c */
-extern int remove_irm_protections(void);
-
-/* in file quark_irq.c */
-extern	int32	quark_irq_routing(void);
-
-/* in file sdmcclose.c */
-extern	devcall	sdmcclose(struct dentry *);
-
-/* in file sdmcinit.c */
-extern	devcall	sdmcinit(struct dentry *);
-
-/* in file sdmcopen.c */
-extern	devcall	sdmcopen(struct dentry *, char *, char *);
-
-/* in file sdmcread.c */
-extern	devcall	sdmcread(struct dentry *, char *, int32);
-
-/* in file sdmcwrite.c */
-extern	devcall	sdmcwrite(struct dentry *, char *, int32);
-
-/* in file sdmcdispatch.S */
-extern	interrupt	sdmcdispatch(void);
-
-/* in file ttydispatch.c */
-extern	interrupt	ttydispatch(void);
-
-/* in file evec.c */
-extern	void	trap(int32, long *);
-
-/* in file ttyhandler.c */
-extern	void	ttyhandler(void);
-
-/* in file ethhandler.c */
-extern 	interrupt	ethhandler();
-
-#endif

@@ -8,8 +8,8 @@
  */
 devcall	ethwrite	(
 	  struct dentry	*devptr,	/* Entry in device switch table	*/
-	  void	*buf,			/* Buffer that hols a packet	*/
-	  uint32 len 			/* Length of the packet		*/
+	  char	*buf,			/* Buffer that hols a packet	*/
+	  int32	len 			/* Length of the packet		*/
 	)
 {
 	struct	ethcblk *ethptr;	/* Pointer to control block	*/

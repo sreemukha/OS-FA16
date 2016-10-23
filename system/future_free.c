@@ -9,4 +9,3 @@ syscall future_free(future *fut)
  }
   return freemem((char*)fut,sizeof(future));
 }
-

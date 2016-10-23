@@ -8,8 +8,8 @@
  */
 devcall	ethread	(
 	  struct dentry	*devptr,	/* Entry in device switch table	*/
-	  void	*buf,			/* Buffer for the packet	*/
-	  uint32	len 		/* Size of the buffer		*/
+	  char	*buf,			/* Buffer for the packet	*/
+	  int32	len 			/* Size of the buffer		*/
 	)
 {
 	struct	ethcblk *ethptr;	/* Ethertab entry pointer	*/
