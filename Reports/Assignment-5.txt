@@ -1,0 +1,12 @@
+System calls implemented as a part of this assignment are 
+future_alloc(), 
+future_get(), 
+future_set(), 
+future_free(). 
+
+implemented queue data structure (queue.h)
+Used default enqueue and dequeue functions from system/queue.c
+
+Also programmed future_cons.c, future_prods.c, xsh_prodcons.c
+
+Both the teammates contributed equally towards this assignment.  
