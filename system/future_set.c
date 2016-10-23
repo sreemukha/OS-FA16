@@ -61,4 +61,4 @@ syscall future_set(future* f, int32* value){
 	}
 	break;
   } //end switch
-} //end syscall
+} //end syscall future_set

@@ -1,4 +1,5 @@
-System calls implemented as a part of this assignment are 
+System calls implemented as a part of this assignment are:
+
 future_alloc(), 
 future_get(), 
 future_set(), 

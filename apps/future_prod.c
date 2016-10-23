@@ -8,6 +8,7 @@ uint32 future_prod(future *fut) {
     j += i;
   }
   j += rand();
+  // calling future_set syscall
   future_set(fut, &j);
   return OK;
 }

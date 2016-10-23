@@ -7,8 +7,8 @@ future* future_alloc(int32 future_flag){
     return SYSERR;		//Return Error if getmem failed
   }
   fut->flag = future_flag;
-  fut->state = FUTURE_EMPTY;	// Initialize state to empty
+  fut->state = FUTURE_EMPTY;	// Initializing state to empty
   fut->get_queue = newqueue();
   fut->set_queue = newqueue();
-  return fut;			// Return the created Future
+  return fut;	// Returning the created Future
 }

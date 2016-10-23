@@ -12,7 +12,7 @@
 #define FUTURE_SHARED     2	    
 #define FUTURE_QUEUE      3     
 	
-
+// futent structure
 typedef struct futent
 {
    int32 *value;		

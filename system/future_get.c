@@ -61,4 +61,4 @@ syscall future_get(future* f, int32* value){
 	restore(im);
 	return OK;
   } // end switch
-} //end syscall
+} //end syscall future_get
