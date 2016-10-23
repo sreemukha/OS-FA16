@@ -16,12 +16,17 @@ shellcmd xsh_prodcons(int nargs, char *args[])
   //check args[1] if present assign value to count
   if(nargs == 2) {
     if(strncmp(args[1],"-f",3) == 0) {
+<<<<<<< HEAD
       future *f_exclusive, *f_shared, *f_queue;
+=======
+      future *f_exlcusive, *f_shared, *f_queue;
+>>>>>>> origin/master
       f_exclusive = future_alloc(FUTURE_EXCLUSIVE);
       f_shared = future_alloc(FUTURE_SHARED);
       f_queue = future_alloc(FUTURE_QUEUE);
 
       // Test FUTURE_EXCLUSIVE
+<<<<<<< HEAD
       conpid[ind] = create(future_cons, 1024, 20, "fcons1",1,f_exclusive);
       ind++;
       conpid[ind] = create(future_prod, 1024, 20, "fprod1", 1, f_exclusive);
@@ -55,6 +60,41 @@ shellcmd xsh_prodcons(int nargs, char *args[])
       conpid[ind] = create(future_prod, 1024, 20, "fprod5",1,f_queue);
       ind++;
       conpid[ind] = create(future_prod, 1024, 20, "fprod6",1,f_queue);
+=======
+      conpid[conind] = create(future_cons, 1024, 20, "fcons1",1,f_exclusive);
+      ind++;
+      conpid[conind] = create(future_prod, 1024, 20, "fprod1", 1, f_exclusive);
+      ind++;
+
+      // Test FUTURE_SHARED
+      conpid[conind] = create(future_cons, 1024, 20, "fcons2",1,f_shared);
+      ind++;
+      conpid[conind] = create(future_cons, 1024, 20, "fcons3",1,f_shared);
+      ind++;
+      conpid[conind] = create(future_cons, 1024, 20, "fcons4",1,f_shared);
+      ind++;
+      conpid[conind] = create(future_cons, 1024, 20, "fcons5",1,f_shared);
+      ind++;
+      conpid[conind] = create(future_prod, 1024, 20, "fprod2",1,f_shared);
+      ind++;	 	 
+
+      // Test FUTURE_QUEUE
+      conpid[conind] = create(future_cons, 1024, 20, "fcons6",1,f_queue);
+      ind++;
+      conpid[conind] = create(future_cons, 1024, 20, "fcons7",1,f_queue);
+      ind++;
+      conpid[conind] = create(future_cons, 1024, 20, "fcons7",1,f_queue);
+      ind++;
+      conpid[conind] = create(future_cons, 1024, 20, "fcons7",1,f_queue);
+      ind++;
+      conpid[conind] = create(future_prod, 1024, 20, "fprod3",1,f_queue);
+      ind++;
+      conpid[conind] = create(future_prod, 1024, 20, "fprod4",1,f_queue);
+      ind++;
+      conpid[conind] = create(future_prod, 1024, 20, "fprod5",1,f_queue);
+      ind++;
+      conpid[conind] = create(future_prod, 1024, 20, "fprod6",1,f_queue);
+>>>>>>> origin/master
       ind++;
 
       // Resuming above processes
@@ -64,6 +104,7 @@ shellcmd xsh_prodcons(int nargs, char *args[])
       sleep(2);
       while(cntproc<ind) {
         for(i=0;i<ind;i++) {
+<<<<<<< HEAD
 	      cpid=conpid[i];
 	      if(cpid!=0) {
 	        prptr = &proctab[cpid];
@@ -73,6 +114,17 @@ shellcmd xsh_prodcons(int nargs, char *args[])
 	            cpid=0;
 	          } //end inner if
 	      }// end if
+=======
+	  cpid=conpid[i];
+	  if(cpid!=0) {
+	    prptr = &proctab[tpid];
+	    if(prptr->prstate==PR_FREE) {
+	      cntproc++;
+	      conpid[i]=0;
+	      cpid=0;
+	    } //end inner if
+	  }// end if
+>>>>>>> origin/master
         } //end for
       } //end while
       
@@ -82,7 +134,11 @@ shellcmd xsh_prodcons(int nargs, char *args[])
       future_free(f_shared);
       kprintf("future shared free\n");
       future_free(f_exclusive);
+<<<<<<< HEAD
       kprintf("future exclusive free\n");
+=======
+      kprintf("future exclusive free"\n);
+>>>>>>> origin/master
       return 0;
     } // end if for -f flag
     if(strncmp(args[1], "--help", 7) ==  0) {

@@ -17,13 +17,46 @@ $(error PLATFORM is not set. Edit your Makedefs file and add 'PLATFORM=arm-qemu'
 endif
 
 ifeq ($(PLATFORM),arm-qemu)
+<<<<<<< HEAD
 	PLAT_CFLAGS =  -DARM_QEMU -mcpu=arm1176jz-s -ggdb3 
+=======
+<<<<<<< HEAD
+
+	ARCH=arm
+	PLAT_CFLAGS = -DARM_QEMU -mcpu=arm1176jz-s -ggdb3 -mno-unaligned-access -marm
+=======
+	PLAT_CFLAGS =  -DARM_QEMU -mcpu=arm1176jz-s -ggdb3
+>>>>>>> upstream/master
+>>>>>>> origin/master
 	PLAT_LOADADDR = 0x00010000
 else ifeq ($(PLATFORM),arm-bbb)
+<<<<<<< HEAD
 	PLAT_CFLAGS =  -DARM_BBB -mcpu=cortex-a8 
+=======
+<<<<<<< HEAD
+
+	ARCH=arm
+	PLAT_CFLAGS = -DARM_BBB -mcpu=cortex-a8 -mno-unaligned-access -marm
+=======
+	PLAT_CFLAGS =  -DARM_BBB -mcpu=cortex-a8
+>>>>>>> upstream/master
+>>>>>>> origin/master
 	PLAT_LOADADDR = 0x81000000
 else ifeq ($(PLATFORM),x86-galileo)
+<<<<<<< HEAD
 	PLAT_CFLAGS =   
+=======
+<<<<<<< HEAD
+
+	ARCH = x86
+	PLAT_CFLAGS = -DX86_GALILEO -march=i586 -m32 
+	LDARCH = elf_i386 
+	INCLUDE	= -I$(TOPDIR)/include -I$(TOPDIR)/include/platform/$(ARCH) -I$(TOPDIR)/include/platform/$(PLATFORM)
+	LGCC = 
+=======
+	PLAT_CFLAGS =
+>>>>>>> upstream/master
+>>>>>>> origin/master
 endif
 
 TOPDIR		=	..
@@ -56,7 +89,7 @@ REBUILDFLAGS 	+=	-s $(TOPDIR)/device/tty			\
 			-s $(TOPDIR)/device/lfs			\
 			-s $(TOPDIR)/device/uart		\
 			-s $(TOPDIR)/device/uart-pl011		\
-			-s $(TOPDIR)/device/loopback		
+			-s $(TOPDIR)/device/loopback
 
 else ifeq ($(PLATFORM),arm-bbb)
 REBUILDFLAGS    +=	-s $(TOPDIR)/device/tty			\
@@ -138,7 +171,7 @@ uboot-tool/mkimage: uboot-tool/mkimage.c
 	@echo making mkimage
 	@(cd uboot-tool; make)
 
-$(BLDDIRS): 
+$(BLDDIRS):
 	@mkdir -p $(BLDDIRS)
 
 objects: $(LD_LIST)
@@ -179,7 +212,7 @@ etags:
 	@(cd $(TOPDIR); find . -name '*.[chS]' -exec etags -a {} \;)
 
 qemu: xinu
-	export QEMU_AUDIO_DRV=wav; export QEMU_WAV_PATH=$(TOPDIR)/compile/.wav.wav; qemu-system-arm -M versatilepb -m 512M -nographic -cpu arm1176 -kernel xinu.boot 
+	export QEMU_AUDIO_DRV=wav; export QEMU_WAV_PATH=$(TOPDIR)/compile/.wav.wav; qemu-system-arm -M versatilepb -m 512M -nographic -cpu arm1176 -kernel xinu.boot
 
 qemu-gdb: xinu
 		export QEMU_AUDIO_DRV=wav; export QEMU_WAV_PATH=$(TOPDIR)/compile/.wav.wav;qemu-system-arm -M versatilepb -m 512M -nographic -cpu arm1176 -kernel xinu.boot -S -gdb tcp::${GPORT}
