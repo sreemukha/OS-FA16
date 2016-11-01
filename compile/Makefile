@@ -1,11 +1,11 @@
 #########################################################################
-#									#
-#									#
-#  Makefile for the Xinu operating system                               #
-#									#
-#  includes: .deps and .defs						#
-#									#
-#									#
+#																														#
+#																														#
+#  Makefile for the Xinu operating system                       															        #
+#																														#
+#  includes: .deps and .defs																							#
+#																														#
+#																														#
 #########################################################################
 include Makedefs
 
@@ -21,50 +21,13 @@ ifeq ($(MMU),true)
 endif
 
 ifeq ($(PLATFORM),arm-qemu)
-<<<<<<< HEAD
-<<<<<<< HEAD
-	PLAT_CFLAGS =  -DARM_QEMU -mcpu=arm1176jz-s -ggdb3 
-=======
-<<<<<<< HEAD
-
-	ARCH=arm
-	PLAT_CFLAGS = -DARM_QEMU -mcpu=arm1176jz-s -ggdb3 -mno-unaligned-access -marm
-=======
-	PLAT_CFLAGS =  -DARM_QEMU -mcpu=arm1176jz-s -ggdb3
->>>>>>> upstream/master
->>>>>>> origin/master
-=======
 	PLAT_CFLAGS =  -DARM_QEMU $(VM) -mcpu=arm1176jz-s -ggdb3
->>>>>>> upstream/master
 	PLAT_LOADADDR = 0x00010000
 else ifeq ($(PLATFORM),arm-bbb)
-<<<<<<< HEAD
-	PLAT_CFLAGS =  -DARM_BBB -mcpu=cortex-a8 
-=======
-<<<<<<< HEAD
-
-	ARCH=arm
-	PLAT_CFLAGS = -DARM_BBB -mcpu=cortex-a8 -mno-unaligned-access -marm
-=======
 	PLAT_CFLAGS =  -DARM_BBB -mcpu=cortex-a8
->>>>>>> upstream/master
->>>>>>> origin/master
 	PLAT_LOADADDR = 0x81000000
 else ifeq ($(PLATFORM),x86-galileo)
-<<<<<<< HEAD
-	PLAT_CFLAGS =   
-=======
-<<<<<<< HEAD
-
-	ARCH = x86
-	PLAT_CFLAGS = -DX86_GALILEO -march=i586 -m32 
-	LDARCH = elf_i386 
-	INCLUDE	= -I$(TOPDIR)/include -I$(TOPDIR)/include/platform/$(ARCH) -I$(TOPDIR)/include/platform/$(PLATFORM)
-	LGCC = 
-=======
 	PLAT_CFLAGS =
->>>>>>> upstream/master
->>>>>>> origin/master
 endif
 
 TOPDIR		=	..
@@ -88,7 +51,7 @@ REBUILDFLAGS	=	-s $(TOPDIR)/system  debug.c 	\
 			-s $(TOPDIR)/system/platform/$(PLATFORM)\
 			-s $(TOPDIR)/lib			\
 			-s $(TOPDIR)/shell  'xsh_rdstest*'      \
-			-s $(TOPDIR)/apps/			\			
+			-s $(TOPDIR)/apps			\
 
 ifeq ($(PLATFORM),arm-qemu)
 REBUILDFLAGS 	+=	-s $(TOPDIR)/device/tty			\
