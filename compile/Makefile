@@ -16,7 +16,12 @@ ifndef PLATFORM
 $(error PLATFORM is not set. Edit your Makedefs file and add 'PLATFORM=arm-qemu'or 'PLATFORM=arm-bbb')
 endif
 
+ifeq ($(MMU),true)
+	VM = -DMMU
+endif
+
 ifeq ($(PLATFORM),arm-qemu)
+<<<<<<< HEAD
 <<<<<<< HEAD
 	PLAT_CFLAGS =  -DARM_QEMU -mcpu=arm1176jz-s -ggdb3 
 =======
@@ -28,6 +33,9 @@ ifeq ($(PLATFORM),arm-qemu)
 	PLAT_CFLAGS =  -DARM_QEMU -mcpu=arm1176jz-s -ggdb3
 >>>>>>> upstream/master
 >>>>>>> origin/master
+=======
+	PLAT_CFLAGS =  -DARM_QEMU $(VM) -mcpu=arm1176jz-s -ggdb3
+>>>>>>> upstream/master
 	PLAT_LOADADDR = 0x00010000
 else ifeq ($(PLATFORM),arm-bbb)
 <<<<<<< HEAD
