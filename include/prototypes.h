@@ -636,23 +636,7 @@ devcall loopbackGetc(struct dentry *);
 devcall loopbackPutc(struct dentry *, char);
 devcall loopbackControl(struct dentry *, int, long, long);
 
-<<<<<<< HEAD
-syscall kputc(uchar c, struct dentry *devptr);
-<<<<<<< HEAD
-=======
-
-extern	void	trap(int32);
-
-/* in file ttyhandler.c */
-extern	void	ttyhandler(uint32);
-
-/* in file ethhandler.c */
-extern	interrupt ethhandler(uint32);
-
-=======
 syscall kprintf(char *fmt, ...);
->>>>>>> upstream/master
->>>>>>> origin/master
 #endif /* ARM_QEMU */
 
 #ifdef ARM_BBB
