@@ -33,6 +33,7 @@ syscall future_get(future* f, int32* value){
 	  f->state = FUTURE_WAITING;
         }
 	cpid=getpid();
+	//kprintf("\nAdding process:%d",cpid);
 	enqueue(cpid,f->get_queue);
 	prptr = &proctab[getpid()];
 	prptr->prstate = PR_WAIT;
@@ -51,14 +52,16 @@ syscall future_get(future* f, int32* value){
 	if(!isempty(f->set_queue)) {
 	  ready(dequeue(f->set_queue));
         }
-	cpid = getpid();
-	enqueue(cpid,f->get_queue);
-	prptr = &proctab[getpid()];
-	prptr->prstate = PR_WAIT;
-	resched();
-	im = disable();
-	*value = *(f->value);
-	restore(im);
-	return OK;
+        else {
+	  cpid = getpid();
+	  enqueue(cpid,f->get_queue);
+	  prptr = &proctab[getpid()];
+	  prptr->prstate = PR_WAIT;
+	  resched();
+	  im = disable();
+	  *value = *(f->value);
+	  restore(im);
+	  return OK;
+      }    
   } // end switch
-} //end syscall future_get
+} //end syscall

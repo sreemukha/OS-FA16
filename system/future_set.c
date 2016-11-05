@@ -5,6 +5,7 @@ syscall future_set(future* f, int32* value){
   struct	procent *prptr;
   int32 tval;
   pid32 cpid;
+  pid32 rpid;
   im = disable();
   tval = *value;
   switch(f->flag){
@@ -35,7 +36,9 @@ syscall future_set(future* f, int32* value){
 	f->value = value;
 	f->state = FUTURE_VALID;
 	while(!isempty(f->get_queue)){
-	  ready(dequeue(f->get_queue));
+	  rpid=dequeue(f->get_queue);
+          //printf("\nReady:%d",rpid);
+	  ready(rpid);
 	}
 	break;
     case FUTURE_QUEUE:
@@ -47,9 +50,9 @@ syscall future_set(future* f, int32* value){
 	  resched(); 
 	  im = disable();
 	  f->value = value;
-	  if(!isempty(f->get_queue)){
+	  /*if(!isempty(f->get_queue)){
 	    ready(dequeue(f->get_queue));
-          }
+          }*/
 	 restore(im);
          return OK;							
 	}
@@ -61,4 +64,4 @@ syscall future_set(future* f, int32* value){
 	}
 	break;
   } //end switch
-} //end syscall future_set
+} //end syscall
