@@ -29,7 +29,7 @@ int32	ethread	(
 	/* Get pointer to the descriptor */
 	rdescptr = (struct eth_a_rx_desc *)ethptr->rxRing +
 						ethptr->rxHead;
-
+	//printf("Pointer ptr = 0x%x\n",rdescptr);
 	/* Read the packet length */
 	retval = rdescptr->packlen;
 	if(retval > count) {

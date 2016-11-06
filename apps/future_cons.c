@@ -1,17 +1,15 @@
-#include <xinu.h>
 #include <prodcons.h>
-#include <future.h>
-
-uint32 future_cons(future *fut) {
-  int32 i, status;
-  intmask im;
-  status = future_get(fut, &i);
-  if (status < 1) {
-    fprintf(stderr,"Error: future_get failed\n\r");
+uint future_cons(future *fut) {
+  int32 i,status=0;
+  intmask mask;
+  mask=disable();
+  status = future_get(fut,&i); //Get the produced value from producer
+  if(status<1) {
+    kprintf("future_get failed\n");
     return -1;
   }
-  im = disable();
-  kprintf("Produced Value:: %d\n", i);
-  restore(im);
+  
+  kprintf("\nConsumed value: %d\n",i);
+  restore(mask);
   return OK;
 }

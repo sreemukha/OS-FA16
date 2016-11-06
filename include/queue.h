@@ -10,7 +10,7 @@
 /*			2 for sleep list plus 2 per semaphore		*/
 /*			2 per future					*/
 #ifndef NQENT
-#define NQENT	(NPROC + 4 + NSEM + NSEM + NFUT + NFUT)
+#define NQENT	(NPROC + 4 + NSEM + NSEM)
 #endif
 
 #define	EMPTY	(-1)		/* Null value for qnext or qprev index	*/
