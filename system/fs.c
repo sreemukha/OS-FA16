@@ -10,7 +10,6 @@ extern int dev0;
 
 char block_cache[512];
 
-
 #define SB_BLK 0
 #define BM_BLK 1
 #define RT_BLK 2
@@ -18,6 +17,10 @@ char block_cache[512];
 #define NUM_FD 16
 struct filetable oft[NUM_FD];
 int next_open_fd = 0;
+
+#define INODES_PER_BLOCK (fsd.blocksz / sizeof(struct inode))
+#define NUM_INODE_BLOCKS (( (fsd.ninodes % INODES_PER_BLOCK) == 0) ? fsd.ninodes / INODES_PER_BLOCK : (fsd.ninodes / INODES_PER_BLOCK) + 1)
+#define FIRST_INODE_BLOCK 2
 
 int inode_id=1;
 
@@ -37,7 +40,7 @@ int fs_open(char *filename, int flags)
             kprintf("\nFile not found\n");
 			return SYSERR;
         }
-        //request entry in filetable:
+        //Filetable entry
         int fd=next_open_fd++;
         struct filetable ft;
         ft.state=FSTATE_OPEN;
@@ -77,7 +80,7 @@ int fs_create(char *filename, int mode)
                 return SYSERR;
             }
         }
-        //request entry in filetable:
+        //Filetable entry
         int fd=next_open_fd++;
         struct filetable ft;
         ft.state=FSTATE_OPEN;
@@ -168,7 +171,6 @@ int fs_write(int fd, void *buf, int nbytes)
         int blk;
         while(nbytes>0){
             if(in.blocks[inode]==0){
-                //new block
                 blk=get_free_block();
                 memcpy(in.blocks+inode,&blk,sizeof(int));
                 memcpy(&((oft+fd)->in),&(in),sizeof(struct inode));
@@ -206,7 +208,6 @@ int fs_write(int fd, void *buf, int nbytes)
     return temp_nbytes-nbytes;
 }
 
-
 int fs_mkfs(int dev, int num_inodes) {
   int i;
   if (dev == 0) {
@@ -224,27 +225,21 @@ int fs_mkfs(int dev, int num_inodes) {
   else {
     fsd.ninodes = num_inodes;
   }
-
   i = fsd.nblocks;
   while ( (i % 8) != 0) {i++;}
   fsd.freemaskbytes = i / 8;
-
   if ((fsd.freemask = getmem(fsd.freemaskbytes)) == (void *)SYSERR) {
     printf("fs_mkfs getmem failed.\n");
     return SYSERR;
   }
-
-  /* zero the free mask */
   for(i=0;i<fsd.freemaskbytes;i++) {
     fsd.freemask[i] = '\0';
   }
 
   fsd.inodes_used = 0;
-
   /* write the fsystem block to SB_BLK, mark block used */
   fs_setmaskbit(SB_BLK);
   bs_bwrite(dev0, SB_BLK, 0, &fsd, sizeof(struct fsystem));
-
   /* write the free block bitmask in BM_BLK, mark block used */
   fs_setmaskbit(BM_BLK);
   bs_bwrite(dev0, BM_BLK, 0, fsd.freemask, fsd.freemaskbytes);
@@ -260,7 +255,6 @@ int fileblock_to_diskblock(int dev, int fd, int fileblock) {
   diskblock = oft[fd].in.blocks[fileblock]; //get the logical block address
   return diskblock;
 }
-
 /* read in an inode and fill in the pointer */
 int get_inode_by_num(int dev, int inode_number, struct inode *in) {
   int bl, inn;
@@ -302,7 +296,6 @@ int put_inode_by_num(int dev, int inode_number, struct inode *in) {
   bs_bwrite(dev0, bl, 0, block_cache, fsd.blocksz);
   return OK;
 }
-
 /* specify the block number to be set in the mask */
 int fs_setmaskbit(int b) {
   int mbyte, mbit;
@@ -311,7 +304,6 @@ int fs_setmaskbit(int b) {
   fsd.freemask[mbyte] |= (0x80 >> mbit);
   return OK;
 }
-
 /* specify the block number to be read in the mask */
 int fs_getmaskbit(int b) {
   int mbyte, mbit;
@@ -319,9 +311,7 @@ int fs_getmaskbit(int b) {
   mbit = b % 8;
   return( ( (fsd.freemask[mbyte] << mbit) & 0x80 ) >> 7);
   return OK;
-
 }
-
 /* specify the block number to be unset in the mask */
 int fs_clearmaskbit(int b) {
   int mbyte, mbit, invb;
@@ -334,15 +324,13 @@ int fs_clearmaskbit(int b) {
   fsd.freemask[mbyte] &= invb;
   return OK;
 }
-
-/* This is maybe a little overcomplicated since the lowest-numbered
-   block is indicated in the high-order bit.  Shift the byte by j
-   positions to make the match in bit7 (the 8th bit) and then shift
-   that value 7 times to the low-order bit to print.  Yes, it could be
-   the other way...  */
+/*  This is maybe a little overcomplicated since the lowest-numbered
+ *  block is indicated in the high-order bit.  Shift the byte by j
+ *  positions to make the match in bit7 (the 8th bit) and then shift
+ *  that value 7 times to the low-order bit to print.  Yes, it could be
+ *  the other way...  */
 void fs_printfreemask(void) {
   int i,j;
-
   for (i=0; i < fsd.freemaskbytes; i++) {
     for (j=0; j < 8; j++) {
       printf("%d", ((fsd.freemask[i] << j) & 0x80) >> 7);
@@ -371,5 +359,4 @@ int get_free_block(){
     kprintf("\nNo free blocks available\n");
     return -1;
 }
-
 

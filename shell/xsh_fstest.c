@@ -6,13 +6,10 @@
 void fs_testbitmask(void);
 shellcmd xsh_fstest(int nargs, char *args[])
 {
-    int rval; 
-    int mask;
+    int rval, mask;
     int fd, i, j;
     char *buf1, *buf2;
-    
-    if (nargs == 2 && strncmp(args[1], "--help", 7) == 0)
-    {
+    if (nargs == 2 && strncmp(args[1], "--help", 7) == 0) {
         kprintf("Usage: %s\n\n", args[0]);
         kprintf("Description:\n");
         kprintf("\tFilesystem Test\n");
@@ -20,60 +17,48 @@ shellcmd xsh_fstest(int nargs, char *args[])
         kprintf("\t--help\tdisplay this help and exit\n");
         return OK;
     }
-
     /* Check for correct number of arguments */
-    if (nargs > 1)
-    {
+    if (nargs > 1) {
         fprintf(stderr, "%s: too many arguments\n", args[0]);
         fprintf(stderr, "Try '%s --help' for more information\n",
                 args[0]);
         return SYSERR;
     }
-    if (nargs < 1)
-    {
+    if (nargs < 1) {
         fprintf(stderr, "%s: too few arguments\n", args[0]);
         fprintf(stderr, "Try '%s --help' for more information\n",
                 args[0]);
         return SYSERR;
     }
+
 #ifdef FS
 
     bs_mkdev(0, MDEV_BLOCK_SIZE, MDEV_NUM_BLOCKS); /* device "0" and default blocksize (=0) and count */
     fs_mkfs(0,DEFAULT_NUM_INODES); /* bsdev 0*/
     fs_testbitmask();
-    //fs_print_fsd();
     buf1 = getmem(SIZE*sizeof(char));
     buf2 = getmem(SIZE*sizeof(char));
-    
-    // Create test file
     fd = fs_create("Test_File", O_CREAT);
-    // Fill buffer with random stuff
-    for(i=0; i<SIZE; i++)
-    {
+    for(i=0; i<SIZE; i++) {
         j = i%(127-33);
         j = j+33;
         buf1[i] = (char) j;
     }
-    
     rval = fs_write(fd,buf1,SIZE);
-    if(rval == 0 || rval != SIZE )
-    {
-        //kprintf("\nCannot Write\n");
+    if(rval == 0 || rval != SIZE ) {
+        kprintf("\nWrite failed\n");
         goto clean_up;
     }
-     mask = disable();
+    mask = disable();
     // Now my file offset is pointing at EOF file, i need to bring it back to start of file
     // Assuming here implementation of fs_seek is like "original_offset = original_offset + input_offset_from_fs_seek"
     fs_seek(fd,-rval);
     rval = fs_read(fd, buf2, rval);
-    restore(mask);
-     
-    if(rval == 0)
-    {
+    restore(mask); 
+    if(rval == 0) {
         kprintf("\nRead failed\n");
         goto clean_up;
     }
-        
     kprintf("\nFile contents:\n%s\n",buf2);
     rval = fs_close(fd);
 
