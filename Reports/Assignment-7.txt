@@ -1,0 +1,20 @@
+In order to implement file systems, we've created the following files.
+•	fs.c
+•	xsh_fstest.c
+•	bs.c
+The functions implemented in fs.c are as given below. These functions are the integral part of the implementation of file systems.
+1) fs_create: This function creates a new file. It checks if the file already exists in the current directory. If this is not the case, then the function creates a filetable entry. The syntax for this function is 
+int fs_create(char *filename, int mode)
+2) fs_open: This function opens a file which is already existing. The file is opened in the mode which is specified as a parameter of the function. The syntax of this function is
+int fs_open(char *filename, int flags)
+3) fs_write: This function writes data into the file. The data written into the file is from a block of data contained in buffer. The syntax of this function is 
+int fs_write(int fd, void *buf, int nbytes)
+4) fs_read: This function reads from a block of data which is of length n bytes from the file into a buffer. The length n, the file from which the data is read, and the buffer is specified as parameter of the function. The syntax of the function is
+int fs_read(int fd, void *buf, int nbytes)
+5) fs_close: This functions closes a file. The file which needs to be closed is given as the parameter of the function. The syntax of the file is
+int fs_close(int fd)
+6) fs_seek: This function moves the pointer to a new location as mentioned by the offset. This is done to check if the pointer is beyond the end of the file. The offset and the file on which it operates are specified as parameters of the function. The syntax of this function is 
+int fs_seek(int fd, int offset)
+The file named fs.h is the header file we made use of in our implementation of file systems.
+The file named bs.c is the file which has the implementation details and code for block read and write.
+The file named xsh_fstest.c is the test file which was given to us.
