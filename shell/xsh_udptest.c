@@ -1,18 +1,21 @@
-/* this is the code for the producer thread that is started by the shell command xsh_prodcons */
+/* xsh_prodcons.c - xsh_prodcons */
+/* This file contains the code for the shell command xsh_prodcons */
 
 #include <xinu.h>
-#include <future.h>
+#include<stdio.h>
 
-uint32 future_prod(future *fut)
+shellcmd xsh_udptest(int32 nargs, char *args[])
 {
-	int32 i, j, status,length;
-	
-	char msg[31] = "";		
 	int32	retval;			/* Return value from call	*/
 	uid32	slot;			/* Slot in UDP table		*/
 	uint32	serverip;		/* IP address of a 	*/
 	uint32	rport = 8888;
 	uint32	lport = 64999;
+	char	msg[31]="";
+	char 	retmsg;
+	int32 i =0;
+	int32 j,length;
+	byte *mac;
 	char	prompt[31] = "This is a test message";	/* Message to VM server*/
 	
 	/* Convert time server IP address to binary */
@@ -21,7 +24,8 @@ uint32 future_prod(future *fut)
 		return SYSERR;
 	}
 	
-	/* Register the server and port */
+	/* Contact the time server to get the date and time */
+
 	slot = udp_register(serverip, rport, lport);
 	if (slot == SYSERR) {
 		fprintf(stderr,"udptest: cannot register a udp port %d\n",
@@ -30,7 +34,7 @@ uint32 future_prod(future *fut)
 	}
 
 	/* Send arbitrary message VM server */
-	
+
 	retval = udp_send(slot,	prompt, 100);
 	if (retval == SYSERR) {
 		fprintf(stderr,"udptest: cannot send a udp message %d\n",rport);
@@ -43,21 +47,8 @@ uint32 future_prod(future *fut)
 		udp_release(slot);
 		return SYSERR;
 	}
-	
+	kprintf("\nThe reply received from the VM is : %s\n", msg);
 	udp_release(slot);
-	length = strlen(msg);
-	for (j=0;j<length;j++)
-	{
-	    if(msg[j] >= '0' && msg[j] <= '9') {
-		i = (i*10) + (msg[j] - '0');
-		}
-	}
 
-	status = future_set(fut, &i);
-
-	if (status < 1) {
-		kprintf("future_set failed\n");
-    		return -1;
-	}
-	return OK;
+	return 0;
 }

@@ -23,6 +23,8 @@ process	main(void)
  */
   
   /* Start the network */
+  kprintf("\nAbout to start netstart");
+
   netstart(bbb_ipaddr,bbb_router);
   kprintf("\n...creating a shell\n");
   recvclr();

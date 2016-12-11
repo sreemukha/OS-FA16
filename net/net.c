@@ -32,7 +32,7 @@ void	net_init (void)
 	netbufpool = mkbufpool(PACKLEN, nbufs);
 
 	/* Initialize the ARP cache */
-
+	
 	arp_init();
 
 	/* Initialize UDP */
@@ -72,6 +72,8 @@ process	netin ()
 {
 	struct	netpacket *pkt;		/* Ptr to current packet	*/
 	int32	retval;			/* Return value from read	*/
+	uint32 i, now, diff;
+	
 
 	/* Do forever: read a packet from the network and process */
 

@@ -48,3 +48,4 @@ struct	arpentry {			/* Entry in the ARP cache	*/
 };
 
 extern struct	arpentry arpcache[];
+extern uint32 arptime[];

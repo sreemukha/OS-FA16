@@ -52,11 +52,24 @@ void	nulluser()
 {	
 	struct	memblk	*memptr;	/* Ptr to memory block		*/
 	uint32	free_mem;		/* Total amount of free memory	*/
+	
+	volatile uint32 *wspr = (volatile uint32 *) 0x44E35048;
+	volatile uint32 *wwps = (volatile uint32 *) 0x44E35034;
+	int32	i, j;			/* Index into arptime		*/
+	uint32 diff;			/* Difference in time		*/
+	
 
 	/* Initialize the system */
 	sysinit();
 
 	kprintf("\n\r%s\n\n\r", VERSION);
+
+	kprintf("Disable AM335x watchdog timer 1: ");
+	*wspr = 0x0000AAAA;
+	while (*wwps&0x00000010); // Delay while the first write completes
+	*wspr = 0x00005555;
+	while (*wwps&0x00000010); // Delay while the second write completes
+	kprintf("Complete\n\r");
 
 	/* Output Xinu memory layout */
 	free_mem = 0;
@@ -98,7 +111,23 @@ void	nulluser()
 	/*  something to run when no other process is ready to execute)	*/
 
 	while (TRUE) {
-		;		/* Do nothing */
+		for(i=0;i<ARP_SIZ;i++) {
+			if(arptime[i] == 0) {
+				continue;
+			}
+			else {
+				diff = clktime - arptime[i];
+				if(diff > 60) {
+					kprintf("\nclktime: %d",clktime);
+					kprintf("\narptime[i]: %d",arptime[i]);
+					kprintf("\ndiff: %d",diff);
+					kprintf("\nDeleting stale entry at slot %d in arpcache", i);
+					arpcache[i].arstate = AR_FREE;
+					arptime[i] = 0;
+
+				}
+			}			
+		}
 	}
 
 }

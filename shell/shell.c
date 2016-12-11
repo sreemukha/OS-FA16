@@ -19,6 +19,7 @@ const	struct	cmdent	cmdtab[] = {
 	{"echo",	FALSE,	xsh_echo},
 	{"exit",	TRUE,	xsh_exit},
 	{"help",	FALSE,	xsh_help},
+	{"netfutures",	FALSE,	xsh_netfutures},
 	{"kill",	TRUE,	xsh_kill},
 	{"memdump",	FALSE,	xsh_memdump},
 	{"memstat",	FALSE,	xsh_memstat},
@@ -32,6 +33,8 @@ const	struct	cmdent	cmdtab[] = {
 	{"udp",		FALSE,	xsh_udpdump},
 	{"udpecho",	FALSE,	xsh_udpecho},
 	{"udpeserver",	FALSE,	xsh_udpeserver},
+	{"udptest",	FALSE,	xsh_udptest},
+	{"udprecv",	FALSE,	xsh_udprecv},
 #endif
 	{"test_mmu", 	FALSE, 	xsh_mmu},
   {"?",		FALSE,	xsh_help}

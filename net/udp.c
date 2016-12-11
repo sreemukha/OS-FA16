@@ -44,7 +44,8 @@ void	udp_in(
 	    if (udptr->udstate == UDP_FREE) {
 			continue;
 	    }
-
+	  	
+		
 	    if ((pktptr->net_udpdport == udptr->udlocport)  &&
                     ((udptr->udremport == 0) ||
                         (pktptr->net_udpsport == udptr->udremport)) &&
@@ -66,9 +67,10 @@ void	udp_in(
 			restore(mask);
 			return;
 		}
+
 	    }
 	}
-
+	// kprintf("\nIn UDP IN Discarding packet");
 	/* No match - simply discard packet */
 
 	freebuf((char *) pktptr);
@@ -109,7 +111,6 @@ uid32	udp_register (
 		if ( (remport == udptr->udremport) &&
 		     (locport == udptr->udlocport) &&
 		     (remip   == udptr->udremip  ) ) {
-
 			/* Request is already in the table */
 
 			restore(mask);
@@ -134,7 +135,7 @@ uid32	udp_register (
 		restore(mask);
 		return slot;
 	}
-
+	kprintf("\nReturning SYSERR");
 	restore(mask);
 	return SYSERR;
 }
@@ -403,7 +404,6 @@ status	udp_send (
 	}
 
 	/* Call ipsend to send the datagram */
-
 	ip_send(pkt);
 	restore(mask);
 	return OK;

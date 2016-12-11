@@ -46,6 +46,9 @@ extern	shellcmd  xsh_memdump	(int32, char *[]);
 /* in file xsh_memstat.c */
 extern	shellcmd  xsh_memstat	(int32, char *[]);
 
+/* in file xsh_netfutures.c */
+extern	shellcmd  xsh_netfutures	(int32, char *[]);
+
 /* in file xsh_nvram.c */
 extern	shellcmd  xsh_nvram	(int32, char *[]);
 
@@ -66,6 +69,12 @@ extern	shellcmd  xsh_udpecho	(int32, char *[]);
 
 /* in file xsh_udpeserver.c */
 extern	shellcmd  xsh_udpeserver (int32, char *[]);
+
+/* in file xsh_udptest.c */
+extern	shellcmd  xsh_udptest (int32, char *[]);
+
+/* in file xsh_udprecv.c */
+extern	shellcmd  xsh_udprecv (int32, char *[]);
 
 /* in file xsh_uptime.c */
 extern	shellcmd  xsh_uptime	(int32, char *[]);

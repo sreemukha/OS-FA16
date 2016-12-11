@@ -3,6 +3,7 @@
 #include <xinu.h>
 
 struct	arpentry  arpcache[ARP_SIZ];	/* ARP cache			*/
+uint32 arptime[ARP_SIZ];		/*To hold time stamp	*/
 
 /*------------------------------------------------------------------------
  * arp_init  -  Initialize ARP cache for an Ethernet interface
@@ -11,10 +12,12 @@ struct	arpentry  arpcache[ARP_SIZ];	/* ARP cache			*/
 void	arp_init(void)
 {
 	int32	i;			/* ARP cache index		*/
-
+	
 	for (i=1; i<ARP_SIZ; i++) {	/* Initialize cache to empty	*/
 		arpcache[i].arstate = AR_FREE;
+		arptime[i-1] = 0;
 	}
+		arptime[i-1] = 0;
 }
 
 /*------------------------------------------------------------------------
@@ -84,7 +87,6 @@ status	arp_resolve (
 
 	/* IP address not in cache -  allocate a new cache entry and	*/
 	/*	send an ARP request to obtain the answer		*/
-
 	slot = arp_alloc();
 	if (slot == SYSERR) {
 		restore(mask);
@@ -298,13 +300,13 @@ void	arp_in (
 int32	arp_alloc ()
 {
 	int32	slot;			/* Slot in ARP cache		*/
-
 	/* Search for a free slot */
-
 	for (slot=0; slot < ARP_SIZ; slot++) {
 		if (arpcache[slot].arstate == AR_FREE) {
 			memset((char *)&arpcache[slot],
 					NULLCH, sizeof(struct arpentry));
+			arptime[slot] = clktime;
+			kprintf("\nAdding new IP at slot %d in arpcache\n", slot);
 			return slot;
 		}
 	}
@@ -315,6 +317,8 @@ int32	arp_alloc ()
 		if (arpcache[slot].arstate == AR_RESOLVED) {
 			memset((char *)&arpcache[slot],
 					NULLCH, sizeof(struct arpentry));
+			arptime[slot] = clktime;			
+			kprintf("\nAdding new IP at slot %d in arpcache", slot);
 			return slot;
 		}
 	}

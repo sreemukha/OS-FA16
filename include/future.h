@@ -1,6 +1,8 @@
 #include <xinu.h>
 #ifndef _FUTURE_H_
 #define _FUTURE_H_
+
+
  
 /* define states */
 #define FUTURE_EMPTY	  0
@@ -11,7 +13,7 @@
 #define FUTURE_EXCLUSIVE  1
 #define FUTURE_SHARED     2	    
 #define FUTURE_QUEUE      3     
-	
+
 
 typedef struct futent
 {
